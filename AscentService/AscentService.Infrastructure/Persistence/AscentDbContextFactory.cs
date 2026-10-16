@@ -8,7 +8,7 @@ internal sealed class AscentDbContextFactory : IDesignTimeDbContextFactory<Ascen
     private const string ConnectionStringVariable = "ConnectionStrings__AscentDatabase";
 
     private const string ModelOnlyConnectionString =
-        "Server=localhost;Port=5434;Database=peaker_ascents";
+        "Server=localhost;Port=5434;Database=ascenda_ascents";
 
     public AscentDbContext CreateDbContext(string[] args)
     {

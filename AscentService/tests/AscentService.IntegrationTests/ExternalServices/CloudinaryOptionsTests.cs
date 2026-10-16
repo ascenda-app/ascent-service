@@ -12,7 +12,7 @@ public sealed class CloudinaryOptionsTests
     {
         CloudinaryOptions options = new()
         {
-            CloudName = "peaker-test",
+            CloudName = "ascenda-test",
             ApiKey = "test-key",
             ApiSecret = "test-secret",
             AuthTokenKey = string.Empty

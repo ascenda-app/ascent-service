@@ -5,7 +5,7 @@ namespace AscentService.Infrastructure.ExternalServices;
 public static class PhotoDelivery
 {
     public const string AuthenticatedType = "authenticated";
-    public const string QuarantineTag = "peaker-quarantine";
+    public const string QuarantineTag = "ascenda-quarantine";
     public const string StoredFormat = "webp";
 
     private const string StripProfileFlag = "strip_profile";

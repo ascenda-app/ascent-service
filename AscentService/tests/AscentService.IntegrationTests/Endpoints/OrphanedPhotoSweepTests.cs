@@ -14,7 +14,7 @@ public sealed class OrphanedPhotoSweepTests(AscentServiceApiFactory factory)
     public async Task Sweep_WithAnAgedQuarantinedAssetThatWasNeverPersisted_RemovesIt()
     {
         factory.PhotoAssetInventory.Clear();
-        factory.PhotoAssetInventory.Quarantined.Add(Aged("peaker/test/ascents/never-persisted"));
+        factory.PhotoAssetInventory.Quarantined.Add(Aged("ascenda/test/ascents/never-persisted"));
 
         PhotoSweepResponse result = await factory.SweepOrphanedPhotosAsync(Cutoff);
 
@@ -25,7 +25,7 @@ public sealed class OrphanedPhotoSweepTests(AscentServiceApiFactory factory)
     public async Task Sweep_WithAConfirmedAssetWithoutARow_RemovesIt()
     {
         factory.PhotoAssetInventory.Clear();
-        factory.PhotoAssetInventory.Confirmed.Add(Aged("peaker/test/ascents/unreferenced"));
+        factory.PhotoAssetInventory.Confirmed.Add(Aged("ascenda/test/ascents/unreferenced"));
 
         PhotoSweepResponse result = await factory.SweepOrphanedPhotosAsync(Cutoff);
 
@@ -53,7 +53,7 @@ public sealed class OrphanedPhotoSweepTests(AscentServiceApiFactory factory)
     {
         factory.PhotoAssetInventory.Clear();
         factory.PhotoAssetInventory.Quarantined.Add(
-            new StoredAsset("peaker/test/ascents/in-flight", Cutoff.AddMinutes(1)));
+            new StoredAsset("ascenda/test/ascents/in-flight", Cutoff.AddMinutes(1)));
 
         PhotoSweepResponse result = await factory.SweepOrphanedPhotosAsync(Cutoff);
 

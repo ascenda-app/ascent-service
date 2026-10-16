@@ -31,7 +31,7 @@ internal sealed class FakePhotoStorage : IPhotoStorage
         }
 
         int index = Interlocked.Increment(ref _uploadCount);
-        StoredPhoto stored = new($"peaker/test/ascents/photo-{index}", 1600, 1200);
+        StoredPhoto stored = new($"ascenda/test/ascents/photo-{index}", 1600, 1200);
         QuarantinedPublicIds.Add(stored.PublicId);
 
         return Task.FromResult(Result.Success(stored));

@@ -10,7 +10,7 @@ public sealed class TokenAudienceTests(AscentServiceApiFactory factory)
     [Fact]
     public async Task ProtectedRoute_WithATokenIssuedForAnotherService_Returns401()
     {
-        using HttpClient client = factory.CreateClientWithAudience(ApiTestHelpers.NewUserId(), "peaker-account");
+        using HttpClient client = factory.CreateClientWithAudience(ApiTestHelpers.NewUserId(), "ascenda-account");
 
         using HttpResponseMessage response = await client.GetAsync(new Uri("/api/ascents", UriKind.Relative));
 
@@ -20,7 +20,7 @@ public sealed class TokenAudienceTests(AscentServiceApiFactory factory)
     [Fact]
     public async Task ProtectedRoute_WithATokenIssuedForThisService_IsAccepted()
     {
-        using HttpClient client = factory.CreateClientWithAudience(ApiTestHelpers.NewUserId(), "peaker-ascent");
+        using HttpClient client = factory.CreateClientWithAudience(ApiTestHelpers.NewUserId(), "ascenda-ascent");
 
         using HttpResponseMessage response = await client.GetAsync(new Uri("/api/ascents", UriKind.Relative));
 

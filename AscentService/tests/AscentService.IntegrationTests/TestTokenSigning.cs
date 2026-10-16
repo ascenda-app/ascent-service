@@ -7,8 +7,8 @@ namespace AscentService.IntegrationTests;
 
 internal sealed class TestTokenSigning : IDisposable
 {
-    public const string Issuer = "peaker-auth";
-    public const string Audience = "peaker-ascent";
+    public const string Issuer = "ascenda-auth";
+    public const string Audience = "ascenda-ascent";
 
     private static readonly JsonWebTokenHandler TokenHandler = new() { SetDefaultTimesOnTokenCreation = false };
 
@@ -43,7 +43,7 @@ internal sealed class TestTokenSigning : IDisposable
 
         if (roles.Count > 0)
         {
-            claims[PeakerRoles.ClaimType] = roles.ToArray();
+            claims[AscendaRoles.ClaimType] = roles.ToArray();
         }
 
         SecurityTokenDescriptor descriptor = new()

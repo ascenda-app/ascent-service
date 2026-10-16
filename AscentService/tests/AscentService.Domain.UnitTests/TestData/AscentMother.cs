@@ -37,5 +37,5 @@ internal static class AscentMother
     }
 
     public static PhotoUpload Upload(int index = 0) =>
-        new($"peaker/dev/ascents/photo-{index}", 1024, 768);
+        new($"ascenda/dev/ascents/photo-{index}", 1024, 768);
 }
