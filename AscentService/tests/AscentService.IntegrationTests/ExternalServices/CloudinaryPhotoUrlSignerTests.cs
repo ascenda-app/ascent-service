@@ -8,7 +8,7 @@ namespace AscentService.IntegrationTests.ExternalServices;
 
 public sealed class CloudinaryPhotoUrlSignerTests
 {
-    private const string PublicId = "peaker/test/ascents/photo";
+    private const string PublicId = "ascenda/test/ascents/photo";
     private const string AuthTokenMarker = "__cld_token__";
 
     [Fact]
@@ -35,7 +35,7 @@ public sealed class CloudinaryPhotoUrlSignerTests
     {
         CloudinaryOptions options = new()
         {
-            CloudName = "peaker-test",
+            CloudName = "ascenda-test",
             ApiKey = "test-key",
             ApiSecret = "test-secret",
             AuthTokenKey = authTokenKey

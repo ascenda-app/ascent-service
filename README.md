@@ -1,7 +1,7 @@
 # ascent-service
 
 Registro de ascensiones, fotos y estadísticas del montañero. PostgreSQL 16
-(`peaker_ascents`). Ver `.claude/docs/DESIGN.md` §7.
+(`ascenda_ascents`). Ver `.claude/docs/DESIGN.md` §7.
 
 ## Puesta en marcha local
 

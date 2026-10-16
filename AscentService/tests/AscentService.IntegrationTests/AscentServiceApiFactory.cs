@@ -36,9 +36,9 @@ public sealed class AscentServiceApiFactory : WebApplicationFactory<Program>, IA
     private const string TestAuthTokenKey = "00112233445566778899aabbccddeeff";
 
     private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder("postgres:16-alpine")
-        .WithDatabase("peaker_ascents")
-        .WithUsername("peaker")
-        .WithPassword("peaker")
+        .WithDatabase("ascenda_ascents")
+        .WithUsername("ascenda")
+        .WithPassword("ascenda")
         .Build();
 
     private readonly RabbitMqContainer _rabbitMq = new RabbitMqBuilder("rabbitmq:3-management-alpine").Build();
@@ -75,7 +75,7 @@ public sealed class AscentServiceApiFactory : WebApplicationFactory<Program>, IA
     {
         HttpClient client = CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-            "Bearer", _tokenSigning.CreateAccessToken(userId, [PeakerRoles.Admin]));
+            "Bearer", _tokenSigning.CreateAccessToken(userId, [AscendaRoles.Admin]));
 
         return client;
     }

@@ -52,10 +52,10 @@ internal static class AscentFactory
         new(content ?? JpegBytes, "image/jpeg", "cumbre.jpg");
 
     public static StoredPhoto StoredPhoto() =>
-        new("peaker/dev/ascents/cumbre", 1600, 1200);
+        new("ascenda/dev/ascents/cumbre", 1600, 1200);
 
     public static PhotoUpload PhotoUpload(int index = 0) =>
-        new($"peaker/dev/ascents/photo-{index}", 800, 600);
+        new($"ascenda/dev/ascents/photo-{index}", 800, 600);
 
     public static string SignedUrlFor(string publicId, TimeSpan lifetime) =>
         $"{SignedUrlPrefix}{publicId}?expires={lifetime.TotalSeconds}";
