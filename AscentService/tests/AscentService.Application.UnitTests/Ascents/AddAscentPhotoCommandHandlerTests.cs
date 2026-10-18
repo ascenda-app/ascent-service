@@ -159,6 +159,20 @@ public sealed class AddAscentPhotoCommandHandlerTests
     }
 
     [Fact]
+    public async Task Handle_WhenStorageIsUnavailable_KeepsTheUnavailabilityError()
+    {
+        Ascent ascent = GivenAnExistingAscent();
+        _photoStorage.UploadAsync(Arg.Any<PhotoFile>(), Arg.Any<CancellationToken>())
+            .Returns(Result.Failure<StoredPhoto>(AscentErrors.PhotoStorageUnavailable));
+
+        Result<AscentPhotoResponse> result = await _handler.Handle(CommandFor(ascent), CancellationToken.None);
+
+        result.Error.Should().Be(AscentErrors.PhotoStorageUnavailable);
+        result.Error.Type.Should().Be(Common.Domain.Results.ErrorType.Unavailable);
+        await _unitOfWork.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
+    }
+
+    [Fact]
     public async Task Handle_WhenStorageFails_DoesNotCommit()
     {
         Ascent ascent = GivenAnExistingAscent();

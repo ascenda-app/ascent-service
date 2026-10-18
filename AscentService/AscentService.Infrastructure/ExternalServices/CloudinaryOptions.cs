@@ -19,4 +19,13 @@ public sealed class CloudinaryOptions
 
     [Required]
     public string Folder { get; init; } = "ascenda/dev/ascents";
+
+    /// <summary>
+    /// Una configuración vacía o incompleta no permite hablar con Cloudinary: el almacén
+    /// no está disponible. Se comprueba antes de emitir ninguna petición de red.
+    /// </summary>
+    public bool IsConfigured =>
+        !string.IsNullOrWhiteSpace(CloudName) &&
+        !string.IsNullOrWhiteSpace(ApiKey) &&
+        !string.IsNullOrWhiteSpace(ApiSecret);
 }

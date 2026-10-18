@@ -33,6 +33,14 @@ public static class AscentErrors
     public static readonly Error PhotoUploadFailed =
         Error.Failure("Ascent.PhotoUploadFailed", "No se pudo almacenar la imagen.");
 
+    /// <summary>
+    /// El almacén de fotos no está configurado o no responde. Es una indisponibilidad
+    /// recuperable (503), distinta de un fallo interno inesperado (500).
+    /// </summary>
+    public static readonly Error PhotoStorageUnavailable = Error.Unavailable(
+        "Ascent.PhotoStorageUnavailable",
+        "El almacenamiento de fotos no está disponible en este momento. Inténtalo más tarde.");
+
     public static readonly Error EmailNotConfirmed = Error.Forbidden(
         "Ascent.EmailNotConfirmed",
         "Confirma tu dirección de correo antes de registrar ascensiones.");
