@@ -1,3 +1,4 @@
+using System.Net;
 using AscentService.Application.Abstractions;
 using AscentService.Domain.Ascents;
 using CloudinaryDotNet;
@@ -19,6 +20,13 @@ internal sealed class CloudinaryPhotoStorage(
 
     public async Task<Result<StoredPhoto>> UploadAsync(PhotoFile file, CancellationToken cancellationToken)
     {
+        if (!cloudinaryFactory.Options.IsConfigured)
+        {
+            logger.LogError("Cloudinary is not configured: photo storage is unavailable");
+
+            return Result.Failure<StoredPhoto>(AscentErrors.PhotoStorageUnavailable);
+        }
+
         using MemoryStream stream = new(file.Content.ToArray());
 
         ImageUploadParams uploadParameters = new()
@@ -32,12 +40,27 @@ internal sealed class CloudinaryPhotoStorage(
             Overwrite = false
         };
 
-        ImageUploadResult result = await cloudinaryFactory.Client.UploadAsync(uploadParameters, cancellationToken);
+        ImageUploadResult result;
+
+        try
+        {
+            result = await cloudinaryFactory.Client.UploadAsync(uploadParameters, cancellationToken);
+        }
+        catch (Exception exception) when (IsTransportFailure(exception, cancellationToken))
+        {
+            logger.LogWarning(exception, "Cloudinary photo upload could not reach the storage");
+
+            return Result.Failure<StoredPhoto>(AscentErrors.PhotoStorageUnavailable);
+        }
 
         if (result.Error is not null)
         {
             logger.LogWarning("Cloudinary photo upload failed: {ErrorMessage}", result.Error.Message);
-            return Result.Failure<StoredPhoto>(AscentErrors.PhotoUploadFailed);
+
+            return Result.Failure<StoredPhoto>(
+                IsStorageUnavailable(result.StatusCode)
+                    ? AscentErrors.PhotoStorageUnavailable
+                    : AscentErrors.PhotoUploadFailed);
         }
 
         return new StoredPhoto(result.PublicId, result.Width, result.Height);
@@ -114,4 +137,20 @@ internal sealed class CloudinaryPhotoStorage(
         result.Error is null &&
         (string.Equals(result.Result, DeletedOutcome, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(result.Result, MissingOutcome, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>
+    /// Indica si el fallo de Cloudinary describe una indisponibilidad del almacén (sin
+    /// respuesta, credenciales rechazadas, límite de peticiones o error del proveedor) y no
+    /// un rechazo del contenido enviado, que sí es un fallo de la subida.
+    /// </summary>
+    internal static bool IsStorageUnavailable(HttpStatusCode statusCode) =>
+        (int)statusCode == 0 ||
+        statusCode is HttpStatusCode.Unauthorized
+            or HttpStatusCode.Forbidden
+            or HttpStatusCode.TooManyRequests ||
+        (int)statusCode >= 500;
+
+    private static bool IsTransportFailure(Exception exception, CancellationToken cancellationToken) =>
+        !cancellationToken.IsCancellationRequested &&
+        exception is HttpRequestException or TaskCanceledException or TimeoutException;
 }
